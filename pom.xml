@@ -52,10 +52,11 @@
 						<username>${anypoint.username}</username>
 						<password>${anypoint.password}</password>
 						<applicationName>mulesoft-jenkins-ci-cd</applicationName>
-						<environment>${anypoint.environment}</environment>
-						<properties>
-							<key>value</key>
-						</properties>
+						<environment>${env}</environment>
+						<applicationName>{appname}</applicationName>
+						<workers>${workers}</workers>
+						<workerType>${vCore}</workerType>
+						<objectStoreV2>true</objectStoreV2>
 					</cloudHubDeployment>
 					<coverage>
 						<runCoverage>true</runCoverage>
