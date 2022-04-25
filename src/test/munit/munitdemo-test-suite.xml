@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="munitdemo-test-suite.xml" />
+	<munit:test name="munitdemo-test-suite-munitdemoFlowTest" doc:id="f65ff6ab-5bb0-49b9-b3c3-048d0b66e056" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow Reference" doc:id="428cb445-b013-4b6a-b556-836c856bb6f6" name="munitdemo-test-SetEventFlow"/>
+			<flow-ref doc:name="Flow-ref to munitdemoFlow" doc:id="82cc804a-b99e-4b29-bd82-6770d781d45b" name="munitdemoFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="fb8e221d-8f91-481c-85be-db398abc8575" message="Payload is null" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	<flow name="munitdemo-test-SetEventFlow" doc:id="e77e9876-f437-49d0-95d3-5f261b1705b8" >
+		<munit:set-event doc:name="Set Event" doc:id="f4ec0dee-5c44-477b-9b58-06560bbda314">
+				<munit:attributes value="#[{uriParams:{country: 'America',zone:'Chicago'}}]" />
+			</munit:set-event>
+	</flow>
+	<munit:test name="munitdemo-test-suite-munitdemoFlowTest1" doc:id="dcf0007e-31dc-4a5d-b265-08f6266d798e" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow Reference" doc:id="e340f28c-f98a-4dbc-9a9f-74c4c380ff52" name="munitdemo-test-SetEventFlow"/>
+			<flow-ref doc:name="Flow-ref to munitdemoFlow" doc:id="17ed4d8d-bb20-4c00-ad68-4967c421260a" name="munitdemoFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="e45bc5b6-530c-4530-9e37-f35883e4704a" is="#[MunitTools::withMediaType('application/json')]" expression="#[payload]" message="MediaType is incorrect"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="munitdemo-test-suite-munitdemoFlowTest2" doc:id="b4b5723f-8c79-4315-a3f4-aa09f7c73f93" description="Test">
+		<munit:execution >
+			<flow-ref doc:name="Flow Reference" doc:id="0440fa8e-09d5-422a-a1b3-010b5547d60e" name="munitdemo-test-SetEventFlow"/>
+			<flow-ref doc:name="Flow-ref to munitdemoFlow" doc:id="1b121970-1842-48c6-a6d3-6c82741da0e4" name="munitdemoFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="c4a431e7-defc-429a-ae3f-d2c2f8365d96" is="#[MunitTools::equalTo(true)]" expression="#[payload.dst]" message="DST value is not correct"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

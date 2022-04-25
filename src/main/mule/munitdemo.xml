@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="e202d0be-b4af-41a4-8450-c3e8135c8ada" basePath="/timezone">
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="64dec2fe-2cba-422a-a82b-7815ff20c184" basePath="/api/">
+		<http:request-connection host="worldtimeapi.org" port="80"/>
+	</http:request-config>
+	<flow name="munitdemoFlow" doc:id="6ef61531-7579-49d8-a47b-7008864964d3" >
+		<http:listener doc:name="Listener" doc:id="4410b5b5-0fad-4de9-9116-7e054458fe3b" config-ref="HTTP_Listener_config" path="/{country}/{zone}" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="Logger" doc:id="58ed08bd-49c2-444f-b820-7ba08a283632" message="#[message.attributes.uriParams.country as String]"/>
+		<set-variable value="#[message.attributes.uriParams.country as String]" doc:name="Set Variable" doc:id="3d73a48e-2c63-4f24-8e75-83a8d766da15" variableName="region"/>
+		<set-variable value="#[message.attributes.uriParams.zone as String]" doc:name="Set Variable" doc:id="eb4ee254-592a-4e47-9359-0d8de0098448" variableName="city"/>
+		<http:request method="GET" doc:name="Request" doc:id="7a68432f-2351-4a86-be6f-15e95d822ecc" config-ref="HTTP_Request_configuration" path="/{country}/{zone}" sendCorrelationId="NEVER">
+			<http:body ><![CDATA[payload]]></http:body>
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	country : vars.region,
+	zone : vars.city
+}]]]></http:uri-params>
+		</http:request>
+	</flow>
+</mule>

@@ -1,0 +1,9 @@
+%dw 2.0
+
+type auto_e77e9876_f437_49d0_95d3_5f261b1705b8_Output_Attributes = {|
+  uriParams: {|
+    country: String, 
+    zone: String
+  |}
+|}
+
